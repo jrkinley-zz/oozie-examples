@@ -1,0 +1,14 @@
+<!-- 
+	Hadoop job configuration. Referenced using <job-xml> 
+	Properties defined here can be overridden by the action configuration properties	
+-->
+<configuration>
+	<property>
+		<name>mapred.mapper.new-api</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>mapred.reducer.new-api</name>
+		<value>true</value>
+	</property>
+</configuration>
