@@ -15,29 +15,29 @@ To build the application simply run:
 	
 The example uses the Maven assembly plugin to generate a .tar.gz file which contains all of the workflow and configuration files in the required layout:
 
-oozie-examples-0.0.1-SNAPSHOT-bundle.tar.gz
+	oozie-examples-0.0.1-SNAPSHOT-bundle.tar.gz
 
-- /workflow.xml
-- /config-default.xml
-|
-- /lib/ (*.jar;*.so)
+	/workflow.xml
+	/config-default.xml
+	|
+	/lib/ (*.jar;*.so)
 
 
 Deploy
 -------------
 
-rm -rf examples-oozie
-tar -xvzf oozie-examples-0.0.1-SNAPSHOT-bundle.tar.gz
+	rm -rf examples-oozie
+	tar -xvzf oozie-examples-0.0.1-SNAPSHOT-bundle.tar.gz
 
-hadoop fs -rm -r /user/kinley/oozie/workflows/oozie-examples
-hadoop fs -put oozie-examples /user/kinley/oozie/workflows/
+	hadoop fs -rm -r /user/kinley/oozie/workflows/oozie-examples
+	hadoop fs -put oozie-examples /user/kinley/oozie/workflows/
 
 
 Run
 -------------
 
-export OOZIE_URL= http://ubuntu:11000/oozie
-oozie job -config oozie-examples/job.properties -run
+	export OOZIE_URL= http://ubuntu:11000/oozie
+	oozie job -config oozie-examples/job.properties -run
 
 
 TODO
