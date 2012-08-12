@@ -1,4 +1,4 @@
-Oozie workflow example
+Oozie workflow examples
 =============
 
 This example demonstrates how to develop an Oozie workflow application, and aim's to show-case some of Oozie's features.
