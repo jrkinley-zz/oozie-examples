@@ -10,12 +10,14 @@
 			</prepare>
 			<job-xml>conf/mr-job-config.xml</job-xml>
 			<configuration>
-				<property>
-					<!-- Use this property to override the Oozie launcher class, which must 
-						extend org.apache.oozie.action.hadoop.MapReduceMain -->
+				<!-- If you need to do any custom setup before launching the MapReduce action 
+					you can override the launcher by setting this property. -->
+				<!--
+				<property>					
 					<name>oozie.launcher.action.main.class</name>
 					<value>com.cloudera.examples.oozie.action.CustomLauncher</value>
 				</property>
+				-->
 				<property>
 					<name>mapred.input.dir</name>
 					<value>${nameNode}/user/${wf:conf("user.name")}/data/input</value>
