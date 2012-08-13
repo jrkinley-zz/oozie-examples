@@ -1,55 +1,56 @@
 <workflow-app name="example-workflow" xmlns="uri:oozie:workflow:0.2">
-	<start to="mr-wc" />
+	<start to="ctrl-jumpto" />
 
-	<action name="mr-wc">
+	<!-- Decision node to allow different entry points into the workflow. To 
+		jump to a specific point in the workflow pass "-D jump.to=[single|parallel]" -->
+	<decision name="ctrl-jumpto">
+		<switch>
+			<case to="mr-wordcount">
+				${wf:conf("jump.to") eq "single"}
+			</case>
+			<case to="sub-wf-wordcount">
+				${wf:conf("jump.to") eq "parallel"}
+			</case>
+			<default to="mr-wordcount" />
+		</switch>
+	</decision>
+
+	<!-- Sub-workflow which runs two WordCount MapReduce jobs in parallel -->
+	<action name="sub-wf-wordcount">
+		<sub-workflow>
+			<app-path>${nameNode}/workflows/oozie-examples/sub-workflows/sub-workflow.xml</app-path>
+			<propagate-configuration />
+		</sub-workflow>
+		<ok to="example-workflow-end" />
+		<error to="kill" />
+	</action>
+
+	<!-- WordCount MapReduce job -->
+	<action name="mr-wordcount">
 		<map-reduce>
 			<job-tracker>${jobTracker}</job-tracker>
 			<name-node>${nameNode}</name-node>
 			<prepare>
-				<delete path="${nameNode}/user/${wf:conf('user.name')}/data/output/wc" />
+				<delete path="${nameNode}/workflows/oozie-examples/data/output/wc0" />
 			</prepare>
-			<job-xml>conf/mr-job-config.xml</job-xml>
+			<job-xml>conf/wordcount-mr-config.xml</job-xml>
 			<configuration>
-				<!-- If you need to do any custom setup before launching the MapReduce action 
-					you can override the launcher by setting this property. -->
-				<!--
-				<property>					
+				<!-- If you need to do any custom setup before launching the MapReduce 
+					action you can override the launcher by setting this property. -->
+				<!-- 
+				<property> 
 					<name>oozie.launcher.action.main.class</name>
-					<value>com.cloudera.examples.oozie.action.CustomLauncher</value>
-				</property>
+					<value>com.cloudera.examples.oozie.action.CustomLauncher</value> 
+				</property> 
 				-->
 				<property>
 					<name>mapred.input.dir</name>
-					<value>${nameNode}/user/${wf:conf("user.name")}/data/input</value>
-				</property>
-				<property>
-					<name>mapred.output.dir</name>
-					<value>${nameNode}/user/${wf:conf("user.name")}/data/output/wc</value>
-				</property>
-				<property>
-					<name>mapred.output.key.class</name>
-					<value>org.apache.hadoop.io.Text</value>
-				</property>
-				<property>
-					<name>mapred.output.value.class</name>
-					<value>org.apache.hadoop.io.IntWritable</value>
-				</property>
-				<property>
-					<name>mapreduce.map.class</name>
-					<value>com.cloudera.examples.wordcount.WordCount$Map</value>
-				</property>
-				<property>
-					<name>mapreduce.reduce.class</name>
-					<value>com.cloudera.examples.wordcount.WordCount$Reduce</value>
-				</property>
-				<property>
-					<name>mapreduce.inputformat.class</name>
-					<value>org.apache.hadoop.mapreduce.lib.input.TextInputFormat
+					<value>${nameNode}/workflows/oozie-examples/data/*.txt
 					</value>
 				</property>
 				<property>
-					<name>mapreduce.outputformat.class</name>
-					<value>org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
+					<name>mapred.output.dir</name>
+					<value>${nameNode}/workflows/oozie-examples/data/output/wc0
 					</value>
 				</property>
 				<property>

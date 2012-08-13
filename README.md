@@ -1,26 +1,27 @@
 Oozie workflow examples
 =============
 
-This example demonstrates how to develop an Oozie workflow application, and aim's to show-case some of Oozie's features.
+Demonstrates how to develop an Oozie workflow application and aim's to show-case some of Oozie's features.
 
 
 Build
 -------------
 
+Maven is used to build the application bundle and it is assumed Maven is installed and on your path.
+
 To build the application simply run:
 
 	mvn package
-	
-* assumes Maven is installed and is on your path
-	
-The example uses the Maven assembly plugin to generate a .tar.gz file which contains all of the workflow and configuration files in the required layout:
 
-	oozie-examples-0.0.1-SNAPSHOT-bundle.tar.gz
+The Maven assembly plugin is used to generate a .tar.gz file which contains all of the workflow and configuration files in the required layout:	
+
+	oozie-examples-[VERSION]-bundle.tar.gz
 
 	/workflow.xml
 	/config-default.xml
 	|
-	/lib/ (*.jar;*.so)
+	/conf/ 	(job config)
+	/lib/ 	(*.jar;*.so)
 
 
 Deploy
@@ -29,16 +30,19 @@ Deploy
 	rm -rf examples-oozie
 	tar -xvzf oozie-examples-0.0.1-SNAPSHOT-bundle.tar.gz
 
-	hadoop fs -rm -r /user/kinley/oozie/workflows/oozie-examples
-	hadoop fs -put oozie-examples /user/kinley/oozie/workflows/
+	hadoop fs -rm -r /workflows/oozie-examples
+	hadoop fs -put oozie-examples /workflows/oozie-examples
 
 
 Run
 -------------
 
-	export OOZIE_URL= http://ubuntu:11000/oozie
+	export OOZIE_URL=http://ubuntu:11000/oozie
 	oozie job -config oozie-examples/job.properties -run
 
+### Run parallel mapreduce jobs in sub-workflow
+
+	oozie job -config oozie-examples/job.properties -D jump.to=parallel -run
 
 TODO
 -------------

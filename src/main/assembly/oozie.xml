@@ -20,5 +20,14 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
+		<!-- 
+			The /data directory is created in this example for convenience but it is not
+			part of the Oozie application and is not usually used as the data should be
+			in the HDFS
+		 -->
+		<fileSet>
+			<directory>${project.basedir}/src/main/resources/data</directory>
+			<outputDirectory>/data</outputDirectory>
+		</fileSet>
 	</fileSets>
 </assembly>
