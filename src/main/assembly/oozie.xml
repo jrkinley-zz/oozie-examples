@@ -12,6 +12,12 @@
 		<fileSet>
 			<directory>${project.basedir}/src/main/workflow</directory>
 			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>*/**.xml</include>
+			</includes>
+			<excludes>
+				<exclude>*/**.properties</exclude>
+			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>${project.build.directory}</directory>
@@ -20,14 +26,25 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
-		<!-- 
-			The /data directory is created in this example for convenience but it is not
-			part of the Oozie application and is not usually used as the data should be
-			in the HDFS
-		 -->
+		<!-- The /data directory is created in this example for convenience but 
+			it is not part of the Oozie application and is not usually used as the data 
+			should be in the HDFS -->
 		<fileSet>
 			<directory>${project.basedir}/src/main/resources/data</directory>
 			<outputDirectory>/data</outputDirectory>
 		</fileSet>
 	</fileSets>
+	<!-- Filter the .properties files to set namenode and jobtracker urls -->
+	<files>
+		<file>
+			<source>${project.basedir}/src/main/workflow/job.properties</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+		<file>
+			<source>${project.basedir}/src/main/workflow/coordinator/coord.properties</source>
+			<outputDirectory>/coordinator</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+	</files>
 </assembly>

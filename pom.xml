@@ -18,6 +18,11 @@
 		</repository>
 	</repositories>
 
+	<properties>
+		<hadoop.name.node>hdfs://debian:8020</hadoop.name.node>
+		<hadoop.job.tracker>debian:8021</hadoop.job.tracker>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>

@@ -30,7 +30,7 @@ Deploy
 	rm -rf examples-oozie
 	tar -xvzf oozie-examples-0.0.1-SNAPSHOT-bundle.tar.gz
 
-	hadoop fs -rm -r /workflows/oozie-examples
+	hadoop fs -rmr /workflows/oozie-examples
 	hadoop fs -put oozie-examples /workflows/oozie-examples
 
 
@@ -43,10 +43,16 @@ Run
 ### Run parallel mapreduce jobs in sub-workflow
 
 	oozie job -config oozie-examples/job.properties -D jump.to=parallel -run
+	
+### Coordinator
 
-TODO
--------------
+The Oozie Coordinator system allows you to define and execute recurrent and interdependent workflow jobs (data application pipelines). A data application pipeline is a chain of coordinator/workflow jobs that can run at regular intervals, different intervals, or be triggered by some external event (data availability). For example, the output of the last 4 runs of a workflow that runs every 15 minutes become the input of another workflow that runs every 60 minutes.
 
-Demonstrate custom Java action and the output properties:
+The coordinator job bundled with this example simply runs the workflow at 5 minute intervals between the given start and end dates. To deploy the coordinator job run the following command:
 
-When running a custom Java action Oozie sets the "oozie.action.output.properties" property. It's value is a path to a local file on the node that the Java action runs. What you can do is write any number of properties (java.util.Properties) to this file and Oozie can retrieve them afterwards from the workflow by calling ${(wf:actionData('java_action_name')['key']))}
+	oozie job -config oozie-examples/coordinator/coord.properties -D start=$(date -u +"%FT%H:%MZ") -D end=$(date -u -d "+ 1 hour" +"%FT%H:%MZ") -D mode=single -run
+
+To stop the coordinator job run:
+
+	oozie job -kill [coord job id]
+	
