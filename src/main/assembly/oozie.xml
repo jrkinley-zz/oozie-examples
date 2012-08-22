@@ -12,9 +12,6 @@
 		<fileSet>
 			<directory>${project.basedir}/src/main/workflow</directory>
 			<outputDirectory>/</outputDirectory>
-			<includes>
-				<include>*/**.xml</include>
-			</includes>
 			<excludes>
 				<exclude>*/**.properties</exclude>
 			</excludes>
