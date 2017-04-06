@@ -3,9 +3,9 @@
 	
 	<!-- Fork two MapReduce jobs -->
 	<fork name="fork-wordcount">
-        <path start="mr-wordcount-p1" />
-        <path start="mr-wordcount-p2" />
-    </fork>
+		<path start="mr-wordcount-p1" />
+		<path start="mr-wordcount-p2" />
+	</fork>
 	
 	<join name="join-wordcount" to="sub-workflow-end" />
 	
